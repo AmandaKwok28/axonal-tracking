@@ -84,7 +84,3 @@ Some functions depend on external lab code, including GraFT, patchGraFT, and mot
 - Pipelines in `src/pipelines` should connect documented steps and avoid hiding important parameters.
 - Demos should be short and reproducible, with enough comments to explain what figure or result they regenerate.
 - Avoid committing large `.h5`, `.mat`, video, or generated result files unless there is a specific reason to keep a small example in version control.
-
-## Handoff Notes
-
-This repository is intended to be readable by someone who did not write the original analysis. When updating it, prefer clear file names, short comments where the reasoning matters, and docstrings that explain inputs, outputs, and workspace assumptions. The most useful future version of this repo is not the cleverest one; it is the one where the next person can tell what was run, why it was run, and how to run it again.
