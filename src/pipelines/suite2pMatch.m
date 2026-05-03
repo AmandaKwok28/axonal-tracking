@@ -34,7 +34,13 @@ function [] = suite2pMatch(k)
 
     % get suite2p ROI time traces
     spks = data.spks;
-    tracesSuite2p = spks(data.iscell == 0, :);
+
+    if size(spks,1) == numel(data.iscell)
+        tracesSuite2p = spks(data.iscell == 0, :);      % this is how it would normally be done on the actual Fall.mat or Suite2pROIs.mat
+    else
+        tracesSuite2p = spks;                           % this version is saved for the sake of github's memory limit for individual files
+    end
+    
 
     % clean suite2p traces
     traces = rollingBaselineDFF(tracesSuite2p);
