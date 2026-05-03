@@ -1,5 +1,65 @@
 function data = preprocess(data, params, opts)
-% this file runs the entire pre-processing pipeline once through
+% PREPROCESS  Run full preprocessing pipeline for imaging data.
+%
+%   data = PREPROCESS(data, params)
+%   data = PREPROCESS(data, params, opts)
+%
+%   Applies motion correction, trial alignment, denoising, optional variance
+%   masking, and normalization to imaging data stored in a struct. Designed
+%   for Fsim-style tensors (HxWxT).
+%
+%   Inputs:
+%       data   - Struct containing imaging data fields (e.g., Fsim, Fsim1, ...)
+%
+%       params - Struct of parameters used by preprocessing steps
+%                (e.g., motion correction settings, save_path)
+%
+%       opts   - (optional struct with fields)
+%           pth     : (char, default = '')
+%                     Path to directory containing precomputed motion
+%                     correction shifts. If provided, skips recomputing
+%                     motion correction and applies saved shifts.
+%
+%           varMask : (logical, default = true)
+%                     If true, suppresses low-variance pixels using a global
+%                     threshold on per-pixel standard deviation.
+%
+%   Output:
+%       data   - Struct with processed imaging data (same structure as input)
+%
+%   Pipeline:
+%       1. Motion correction
+%           - Load and apply precomputed shifts if opts.pth is provided
+%           - Otherwise compute shifts via motion_correct()
+%
+%       2. Trial alignment
+%           - Aligns trials temporally (alignTrials)
+%
+%       3. Denoising
+%           - PCA-based denoising (denoiseCI)
+%
+%       4. Variance masking (optional)
+%           - Removes low-variance pixels (std < 3 * mean std)
+%
+%       5. Normalization
+%           - Zero-centers over time
+%           - Scales by 90th percentile of absolute values
+%
+%   Notes:
+%       - Assumes imaging data is stored in fields named Fsim, Fsim1, Fsim2, etc.
+%       - Normalization is robust to outliers via percentile scaling
+%       - Variance masking helps suppress background noise but may remove
+%         weak signals if threshold is too aggressive
+%
+%   Example:
+%       % First run (compute and save motion correction)
+%       params.save_path = dayPath;
+%       data = preprocess(data, params);
+%
+%       % Reuse saved motion correction
+%       data = preprocess(data, params, pth=dayPath);
+%
+%   See also: motion_correct, apply_shifts (in NormCorre documentation), alignTrials, denoiseCI
 
     % error handling
     arguments
@@ -74,3 +134,4 @@ function data = preprocess(data, params, opts)
     fprintf('normalizing done.\n');
 
 end
+
