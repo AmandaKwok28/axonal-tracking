@@ -41,7 +41,7 @@ function makeGraFTFig()
 %   See also: rollingBaselineDFF, wiener2, imadjust, plotDifferentColoredROIS2
 
     % load day data
-    data = load('GraFTFig.mat');
+    data = load('GraFTFigCropped.mat');
     D = data.D;
     S = data.S;
 

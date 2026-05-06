@@ -1,4 +1,4 @@
-function [] = suite2pMatch(k)
+function scores = suite2pMatch(k)
 
     % defaults
     if nargin < 1 || isempty(k), k = 15; end
@@ -71,11 +71,15 @@ function [] = suite2pMatch(k)
 
     % top row: original mean image, mean image with suite2p rois overlaid
     subplot(2, 2, 1); imagesc(m.meanIm); axis off; axis square;
+    title('preprocessed day1 mean image');
     subplot(2, 2, 2); imagesc(im); clim([0 500]); axis off; axis square; plotSuite2p(X, Y, im);
+    title('all suite2p ROIs for day1');
     
     % bottom row: selected ROI, matched suite2p overlaid with topK, suite2p overlaid with topK + N
     subplot(2, 2, 3); imagesc(g.S(:,:, roi)); axis off; axis square;
+    title('reference ROI')
     subplot(2, 2, 4); imagesc(im); clim([0 500]); axis off; axis square; plotSuite2p(xTop, yTop, im); axis off; axis square;
+    title('correlated suite2p ROIs')
 
 end
 
